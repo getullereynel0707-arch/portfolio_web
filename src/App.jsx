@@ -168,6 +168,8 @@ function App() {
       name: formData.name,
       email: formData.email,
       message: formData.message,
+      title: "New video editing project inquiry",
+      time: new Date().toLocaleString(),
     };
 
     emailjs
