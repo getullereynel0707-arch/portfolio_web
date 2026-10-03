@@ -67,7 +67,7 @@ const roles = [
 const emailJsServiceId =
   import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_02nwq4n";
 const emailJsTemplateId =
-  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "serp10p";
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_uprmq5a";
 const emailJsPublicKey =
   import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "OP34K68php1w60w4V";
 
