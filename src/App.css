@@ -695,6 +695,14 @@ button {
   position: relative;
 }
 
+.project-image video {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
 .project-1 {
   background: linear-gradient(135deg, #4b1421, #10090b);
 }

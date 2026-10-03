@@ -9,13 +9,15 @@ const projects = [
     description:
       "Fast-paced short-form edits featuring engaging hooks, captions, jump cuts, transitions, sound effects, and dynamic pacing.",
     tags: ["Short-Form", "Captions", "Jump Cuts"],
+    videoSrc: "/work/short.mp4",
   },
   {
-    title: "YouTube & Long-Form Editing",
-    category: "YouTube / Podcasts / Vlogs",
+    title: "Long-Form Editing",
+    category: "Event Highlights / Freelance",
     description:
-      "Clean and engaging long-form video editing with storytelling, pacing, sound design, color correction, and supporting visuals.",
-    tags: ["YouTube", "Podcast", "Color Grading"],
+      "Polished event highlights and freelance video edits with engaging storytelling, clean pacing, sound design, and color correction.",
+    tags: ["Event Highlights", "Freelance", "Storytelling"],
+    href: "https://www.facebook.com/share/v/1MGzpJMRFk/",
   },
   {
     title: "Motion Graphics",
@@ -23,6 +25,7 @@ const projects = [
     description:
       "Dynamic motion graphics, animated text, visual effects, transitions, and branded elements designed to make content more engaging.",
     tags: ["After Effects", "Motion Graphics", "Animation"],
+    videoSrc: "/work/motion-graphics.mp4",
   },
 ];
 
@@ -548,6 +551,16 @@ function App() {
                       index + 1
                     }`}
                   >
+                    {project.videoSrc && (
+                      <video
+                        aria-label={`${project.title} video sample`}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        src={project.videoSrc}
+                      />
+                    )}
+
                     <span>
                       {String(index + 1).padStart(
                         2,
@@ -555,8 +568,12 @@ function App() {
                       )}
                     </span>
 
-                    <div className="project-shape" />
-                    <div className="project-lines" />
+                    {!project.videoSrc && (
+                      <>
+                        <div className="project-shape" />
+                        <div className="project-lines" />
+                      </>
+                    )}
                   </div>
 
                   <div className="project-content">
@@ -582,10 +599,17 @@ function App() {
                       )}
                     </div>
 
-                    <button className="project-link">
-                      View project{" "}
-                      <span>↗</span>
-                    </button>
+                    {project.href && (
+                      <a
+                        className="project-link"
+                        href={project.href}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View project{" "}
+                        <span>↗</span>
+                      </a>
+                    )}
                   </div>
                 </article>
               )
@@ -621,7 +645,7 @@ function App() {
             <div className="contact-actions">
               <a
                 className="button primary"
-                href="mailto:getullereynel0707.com?subject=Video%20Editing%20Project"
+                href="mailto:getullereynel0707@gmail.com?subject=Video%20Editing%20Project"
               >
                 Start a Project ↗
               </a>
