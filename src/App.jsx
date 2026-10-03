@@ -658,7 +658,25 @@ function App() {
                 className="button primary"
                 href="mailto:getullereynel0707@gmail.com?subject=Video%20Editing%20Project"
               >
-                Start a Project ↗
+                Email Me ↗
+              </a>
+
+              <a
+                className="button secondary"
+                href="https://www.instagram.com/krnstyl.kei/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Instagram · @krnstyl.kei ↗
+              </a>
+
+              <a
+                className="button secondary"
+                href="https://www.facebook.com/rey.nel.5249"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Facebook · Nel ↗
               </a>
 
               <a
