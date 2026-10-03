@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import emailjs from "@emailjs/browser";
 import "./App.css";
 import profilePhoto from "./assets/profile.jpg";
 
@@ -68,6 +69,8 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [typedText, setTypedText] = useState("");
   const [roleIndex, setRoleIndex] = useState(0);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contactStatus, setContactStatus] = useState("idle");
 
   // Dark / Light mode
   useEffect(() => {
@@ -125,8 +128,39 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!contactOpen) return;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setContactOpen(false);
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [contactOpen]);
+
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setContactStatus("sending");
+
+    try {
+      await emailjs.sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        form,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      );
+      form.reset();
+      setContactStatus("success");
+    } catch (error) {
+      console.error("EmailJS contact form failed:", error);
+      setContactStatus("error");
+    }
   };
 
   return (
@@ -656,9 +690,14 @@ function App() {
             <div className="contact-actions">
               <a
                 className="button primary"
-                href="mailto:getullereynel0707@gmail.com?subject=Video%20Editing%20Project"
+                href="#contact-form"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setContactStatus("idle");
+                  setContactOpen(true);
+                }}
               >
-                Email Me ↗
+                Email Me
               </a>
 
               <a
@@ -689,6 +728,91 @@ function App() {
           </div>
         </section>
       </main>
+
+      {contactOpen && (
+        <div
+          className="contact-modal-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setContactOpen(false);
+            }
+          }}
+        >
+          <section
+            aria-labelledby="contact-dialog-title"
+            aria-modal="true"
+            className="contact-modal"
+            role="dialog"
+          >
+            <button
+              aria-label="Close contact form"
+              className="contact-modal-close"
+              onClick={() => setContactOpen(false)}
+              type="button"
+            >
+              ×
+            </button>
+
+            <p className="eyebrow">PROJECT INQUIRY</p>
+            <h2 id="contact-dialog-title">Tell me about your project.</h2>
+
+            <form
+              className="contact-form"
+              id="contact-form"
+              onSubmit={handleContactSubmit}
+            >
+              <label htmlFor="contact-name">Your name</label>
+              <input
+                autoComplete="name"
+                autoFocus
+                id="contact-name"
+                name="name"
+                placeholder="Name"
+                required
+              />
+
+              <label htmlFor="contact-email">Your email</label>
+              <input
+                autoComplete="email"
+                id="contact-email"
+                name="email"
+                placeholder="you@example.com"
+                required
+                type="email"
+              />
+
+              <label htmlFor="contact-message">Project details</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                placeholder="What would you like to create?"
+                required
+                rows="4"
+              />
+
+              <button
+                className="button primary contact-form-submit"
+                disabled={contactStatus === "sending"}
+                type="submit"
+              >
+                {contactStatus === "sending" ? "Sending..." : "Send Message"}
+              </button>
+
+              <p aria-live="polite" className="contact-form-status" role="status">
+                {contactStatus === "success" && "Message sent. Thanks for reaching out!"}
+                {contactStatus === "error" && "Couldn't send your message. Please try again or email me directly."}
+              </p>
+            </form>
+
+            <a
+              className="contact-email-fallback"
+              href="mailto:getullereynel0707@gmail.com"
+            >
+              Or email getullereynel0707@gmail.com
+            </a>
+          </section>
+        </div>
+      )}
 
       {/* ================= FOOTER ================= */}
       <footer>
