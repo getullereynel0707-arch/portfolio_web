@@ -77,7 +77,12 @@ function App() {
   const [typedText, setTypedText] = useState("");
   const [roleIndex, setRoleIndex] = useState(0);
   const [contactOpen, setContactOpen] = useState(false);
-  const [contactStatus, setContactStatus] = useState("idle");
+  const [contactStatus, setContactStatus] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
 
   // Dark / Light mode
   useEffect(() => {
@@ -150,24 +155,38 @@ function App() {
     setMenuOpen(false);
   };
 
-  const handleContactSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    setContactStatus("sending");
+  const handleContactChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({ ...current, [name]: value }));
+  };
 
-    try {
-      await emailjs.sendForm(
+  const handleContactSubmit = (event) => {
+    event.preventDefault();
+    setContactStatus("Sending...");
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    emailjs
+      .send(
         emailJsServiceId,
         emailJsTemplateId,
-        form,
-        { publicKey: emailJsPublicKey }
+        templateParams,
+        emailJsPublicKey
+      )
+      .then(
+        () => {
+          setContactStatus("Message sent successfully!");
+          setFormData({ name: "", email: "", message: "" });
+        },
+        (error) => {
+          console.error("EmailJS Error:", error);
+          setContactStatus("Couldn't send your message. Please try again.");
+        }
       );
-      form.reset();
-      setContactStatus("success");
-    } catch (error) {
-      console.error("EmailJS contact form failed:", error);
-      setContactStatus("error");
-    }
   };
 
   return (
@@ -700,7 +719,7 @@ function App() {
                 href="#contact-form"
                 onClick={(event) => {
                   event.preventDefault();
-                  setContactStatus("idle");
+                  setContactStatus("");
                   setContactOpen(true);
                 }}
               >
@@ -774,8 +793,10 @@ function App() {
                 autoFocus
                 id="contact-name"
                 name="name"
+                onChange={handleContactChange}
                 placeholder="Name"
                 required
+                value={formData.name}
               />
 
               <label htmlFor="contact-email">Your email</label>
@@ -783,31 +804,34 @@ function App() {
                 autoComplete="email"
                 id="contact-email"
                 name="email"
+                onChange={handleContactChange}
                 placeholder="you@example.com"
                 required
                 type="email"
+                value={formData.email}
               />
 
               <label htmlFor="contact-message">Project details</label>
               <textarea
                 id="contact-message"
                 name="message"
+                onChange={handleContactChange}
                 placeholder="What would you like to create?"
                 required
                 rows="4"
+                value={formData.message}
               />
 
               <button
                 className="button primary contact-form-submit"
-                disabled={contactStatus === "sending"}
+                disabled={contactStatus === "Sending..."}
                 type="submit"
               >
-                {contactStatus === "sending" ? "Sending..." : "Send Message"}
+                {contactStatus === "Sending..." ? "Sending..." : "Send Message"}
               </button>
 
               <p aria-live="polite" className="contact-form-status" role="status">
-                {contactStatus === "success" && "Message sent. Thanks for reaching out!"}
-                {contactStatus === "error" && "Couldn't send your message. Please try again or email me directly."}
+                {contactStatus}
               </p>
             </form>
 
