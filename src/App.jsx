@@ -18,6 +18,7 @@ const projects = [
       "Polished event highlights and freelance video edits with engaging storytelling, clean pacing, sound design, and color correction.",
     tags: ["Event Highlights", "Freelance", "Storytelling"],
     href: "https://www.facebook.com/share/v/1MGzpJMRFk/",
+    linkLabel: "Watch on Facebook",
   },
   {
     title: "Motion Graphics",
@@ -574,6 +575,16 @@ function App() {
                         <div className="project-lines" />
                       </>
                     )}
+
+                    {project.href && (
+                      <a
+                        aria-label={`Open ${project.title} on Facebook`}
+                        className="project-image-link"
+                        href={project.href}
+                        rel="noreferrer"
+                        target="_blank"
+                      />
+                    )}
                   </div>
 
                   <div className="project-content">
@@ -606,7 +617,7 @@ function App() {
                         target="_blank"
                         rel="noreferrer"
                       >
-                        View project{" "}
+                        {project.linkLabel || "View project"}{" "}
                         <span>↗</span>
                       </a>
                     )}
