@@ -64,6 +64,13 @@ const roles = [
   "Visual Storyteller",
 ];
 
+const emailJsServiceId =
+  import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_02nwq4n";
+const emailJsTemplateId =
+  import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "serp10p";
+const emailJsPublicKey =
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "_syar4aQITUWoEvCZ";
+
 function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -150,10 +157,10 @@ function App() {
 
     try {
       await emailjs.sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        emailJsServiceId,
+        emailJsTemplateId,
         form,
-        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+        { publicKey: emailJsPublicKey }
       );
       form.reset();
       setContactStatus("success");
