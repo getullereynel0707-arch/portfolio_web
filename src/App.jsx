@@ -20,6 +20,7 @@ const projects = [
     tags: ["Event Highlights", "Freelance", "Storytelling"],
     href: "https://www.facebook.com/share/v/1MGzpJMRFk/",
     linkLabel: "Watch on Facebook",
+    imageSrc: "/work/long-form.jpg",
   },
   {
     title: "Motion Graphics",
@@ -624,6 +625,13 @@ function App() {
                       />
                     )}
 
+                    {project.imageSrc && (
+                      <img
+                        alt={`${project.title} video thumbnail`}
+                        src={project.imageSrc}
+                      />
+                    )}
+
                     <span>
                       {String(index + 1).padStart(
                         2,
@@ -631,7 +639,7 @@ function App() {
                       )}
                     </span>
 
-                    {!project.videoSrc && (
+                    {!project.videoSrc && !project.imageSrc && (
                       <>
                         <div className="project-shape" />
                         <div className="project-lines" />
