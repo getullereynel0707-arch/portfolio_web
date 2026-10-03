@@ -69,7 +69,7 @@ const emailJsServiceId =
 const emailJsTemplateId =
   import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "serp10p";
 const emailJsPublicKey =
-  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "_syar4aQlTUWoEvCZ";
+  import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "OP34K68php1w60w4V";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
